@@ -8,6 +8,8 @@ import jakarta.persistence.*;
 @Entity
 @Table(name="books") //if we have db
 public class Book {
+
+    //test changes
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) //generate the primary key value by the database itself using the auto-increment column
     private Long id;
