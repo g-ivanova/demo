@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <link rel="stylesheet"
+          href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">Boooks</a>
+
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/books}">Books</a>
+            </li>
+        </ul>
+    </div>
+</nav>
+<br>
+<br>
+<div class = "container">
+    <div class = "row">
+        <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
+            <h1 class = "text-center"> Add new book</h1>
+            <div class = "card-body">
+                <form th:action="@{/books}" th:object = "${book}" method="POST">
+                    <div class ="form-group">
+                        <label> Book Name </label>
+                        <input
+                                type = "text"
+                                name = "name"
+                                th:field = "*{name}"
+                                class = "form-control"
+                                placeholder="Enter Book Name"
+                        />
+                    </div>
+
+                    <div class ="form-group">
+                        <label> Book author </label>
+                        <input
+                                type = "text"
+                                name = "author"
+                                th:field = "*{author}"
+                                class = "form-control"
+                                placeholder="Enter Author"
+                        />
+                    </div>
+
+                    <div class ="form-group">
+                        <label> Book year </label>
+                        <input
+                                type = "text"
+                                name = "year"
+                                th:field = "*{year}"
+                                class = "form-control"
+                                placeholder="Enter Book Year"
+                        />
+                    </div>
+
+                  <!--  <div class ="form-group">
+                        <label> Book genre </label>
+                        <input
+                                type = "text"
+                                name = "genre"
+                                th:field = "*{genre}"
+                                class = "form-control"
+                                placeholder="Enter Book Genre"
+                        />
+                    </div>-->
+
+                    <div class="form-row">
+                        <div class="col-auto">
+                            <label> Book genre </label>
+                            <select class="form-control custom-select" id="genre" name="genre">
+                                <option selected>Genre:</option>
+                                <option >Historical</option>
+                                <option >Comedy</option>
+                                <option >Fantasy</option>
+                                <option >Sci-fi</option>
+                            </select>
+                            </label>
+                        </div>
+                    </div>
+
+                    <div class ="form-group">
+                        <label> Book quantity </label>
+                        <input
+                                type = "text"
+                                name = "genre"
+                                th:field = "*{total_quantity}"
+                                class = "form-control"
+                                placeholder="Enter Book quantity"
+                        />
+                    </div>
+
+
+
+                    <div class = "text-center">
+                        <button type="submit" class = "btn btn-outline-dark btn-lg">
+                            Submit
+                        </button>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

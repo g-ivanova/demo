@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Books</title>
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+          integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh"
+          crossorigin="anonymous">
+</head>
+<body>
+<nav class="navbar navbar-expand-md bg-dark navbar-dark">
+    <!-- Brand -->
+    <a class="navbar-brand" href="#">Books</a>
+
+    <!-- Toggler/collapsibe Button -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <!-- Navbar links -->
+    <div class="collapse navbar-collapse" id="collapsibleNavbar">
+        <ul class="navbar-nav">
+        </ul>
+    </div>
+</nav>
+
+<div class ="container">
+    <div class = "row">
+        <h1> All Books </h1>
+    </div>
+
+    <div class = "row">
+        <div class = "col-lg-3">
+            <a th:href = "@{/books/add}" button type="button" class = "btn btn-dark btn-sm mb-3"> Add Books</a>
+        </div>
+    </div>
+    <table class = "table">
+        <thead class="thead-dark">
+        <tr>
+            <th>Book name</th>
+            <th>Book author</th>
+            <th>Book year</th>
+            <th>Book genre</th>
+            <th>Book total quantity</th>
+            <th>Book borrowed quantity</th>
+            <th> Actions </th>
+        </tr>
+        </thead>
+
+        <tbody>
+        <tr th:each = "book: ${books}">
+            <td th:text = "${book.name}"></td>
+            <td th:text = "${book.author}"></td>
+            <td th:text = "${book.year}"></td>
+            <td th:text = "${book.genre}"></td>
+            <td th:text = "${book.total_quantity}"></td>
+            <td th:text = "${book.borrowed_quantity}"></td>
+            <td>
+                <a class ="btn btn-outline-dark btn-sm" th:href = "@{/books/edit/{id}(id=${book.id})}">Update</a>
+
+                <a class ="btn btn-outline-danger btn-sm" th:href = "@{/books/{id}(id=${book.id})}">Delete</a>
+
+                <a class ="btn btn-outline-success btn-sm" th:href = "@{/books/borrow/{id}(id=${book.id})}">Borrow</a>
+
+                <a class ="btn btn-outline-warning btn-sm" th:href = "@{/books/return/{id}(id=${book.id})}">Return</a>
+
+            </td>
+        </tr>
+        </tbody>
+
+    </table>
+
+</div>
+</body>
+</html>
