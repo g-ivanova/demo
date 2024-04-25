@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html">
 <head>
     <meta charset="UTF-8">
     <title>Books</title>
@@ -11,7 +11,6 @@
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <!-- Brand -->
-    <a class="navbar-brand" href="#">Books</a>
 
     <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -21,10 +20,17 @@
     <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/history}">History</a>
+            </li>
+            <li>
+                <a class="nav-link" th:href="@{/users}">Users</a>
+            </li>
         </ul>
     </div>
 </nav>
-
+<br>
+<br>
 <div class ="container">
     <div class = "row">
         <h1> All Books </h1>
@@ -34,43 +40,52 @@
         <div class = "col-lg-3">
             <a th:href = "@{/books/add}" button type="button" class = "btn btn-dark btn-sm mb-3"> Add Books</a>
         </div>
-    </div>
-    <table class = "table">
-        <thead class="thead-dark">
-        <tr>
-            <th>Book name</th>
-            <th>Book author</th>
-            <th>Book year</th>
-            <th>Book genre</th>
-            <th>Book total quantity</th>
-            <th>Book borrowed quantity</th>
-            <th> Actions </th>
-        </tr>
-        </thead>
+        <input type="text" id="searchText" style="height:30px;width: 300px;" name="searchText" maxlength="10" placeholder="searchText" />
+            <button type="button" class = "btn btn-dark btn-sm mb-3" onclick="createUrl()"> Search Books</button>
 
-        <tbody>
-        <tr th:each = "book: ${books}">
-            <td th:text = "${book.name}"></td>
-            <td th:text = "${book.author}"></td>
-            <td th:text = "${book.year}"></td>
-            <td th:text = "${book.genre}"></td>
-            <td th:text = "${book.total_quantity}"></td>
-            <td th:text = "${book.borrowed_quantity}"></td>
-            <td>
-                <a class ="btn btn-outline-dark btn-sm" th:href = "@{/books/edit/{id}(id=${book.id})}">Update</a>
+        <script type="text/javascript">
+            function createUrl(){
+            let searchText = document.getElementById("searchText").value;
+            window.location =  "/books/search/"+searchText;
+            }
+            </script>
+                </div>
+                <table class = "table">
+                    <thead class="thead-dark">
+                    <tr>
+                        <th>Book name</th>
+                        <th>Book author</th>
+                        <th>Book year</th>
+                        <th>Book genre</th>
+                        <th>Book total quantity</th>
+                        <th>Book borrowed quantity</th>
+                        <th> Actions </th>
+                    </tr>
+                    </thead>
 
-                <a class ="btn btn-outline-danger btn-sm" th:href = "@{/books/{id}(id=${book.id})}">Delete</a>
+                    <tbody>
+                    <tr th:each = "book : ${genresName}">
+                        <td th:text = "${book.name}"></td>
+                        <td th:text = "${book.author}"></td>
+                        <td th:text = "${book.year}"></td>
+                        <td th:text = "${book.genre}"></td>
+                        <td th:text = "${book.total_quantity}"></td>
+                        <td th:text = "${book.borrowed_quantity}"></td>
+                        <td>
+                            <a class ="btn btn-outline-dark btn-sm" th:href = "@{/books/edit/{id}(id=${book.book_id})}">Update</a>
 
-                <a class ="btn btn-outline-success btn-sm" th:href = "@{/books/borrow/{id}(id=${book.id})}">Borrow</a>
+                            <a class ="btn btn-outline-danger btn-sm" th:href = "@{/books/{id}(id=${book.book_id})}">Delete</a>
 
-                <a class ="btn btn-outline-warning btn-sm" th:href = "@{/books/return/{id}(id=${book.id})}">Return</a>
+                            <a class ="btn btn-outline-success btn-sm" th:href = "@{/books/borrow/{id}(id=${book.book_id})}">Borrow</a>
 
-            </td>
-        </tr>
-        </tbody>
+                            <a class ="btn btn-outline-warning btn-sm" th:href = "@{/books/return/{id}(id=${book.book_id})}">Return</a>
 
-    </table>
+                        </td>
+                    </tr>
+                    </tbody>
 
-</div>
-</body>
-</html>
+                </table>
+
+            </div>
+            </body>
+            </html>

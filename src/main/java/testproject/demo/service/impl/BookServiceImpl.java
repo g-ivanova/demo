@@ -1,5 +1,6 @@
 package testproject.demo.service.impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import testproject.demo.entity.Book;
 import testproject.demo.repository.BookRepository;
@@ -9,6 +10,7 @@ import java.util.List;
 
 @Service
 public class BookServiceImpl implements BookService {  //methods inherited from interface
+
 
     private BookRepository bookRepository;
 
@@ -29,8 +31,8 @@ public class BookServiceImpl implements BookService {  //methods inherited from 
     }
 
     @Override
-    public Book getBookById(Long id) {
-        return bookRepository.findById(id).get();
+    public Book getBookById(int id) {
+        return bookRepository.findById((long) id).get();
     }
 
     @Override
@@ -42,4 +44,11 @@ public class BookServiceImpl implements BookService {  //methods inherited from 
     public void deleteBookById(Long id) {
         bookRepository.deleteById(id);
     }
+
+    @Override
+    public List<Book> searchBooks(String searchText) {
+        return bookRepository.findBooksBySearchText(searchText);
+    }
+
+
 }

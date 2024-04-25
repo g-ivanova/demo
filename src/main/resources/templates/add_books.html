@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:form="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
     <title>Books</title>
@@ -11,7 +11,6 @@
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
     <!-- Brand -->
-    <a class="navbar-brand" href="#">Boooks</a>
 
     <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
@@ -23,6 +22,9 @@
         <ul class="navbar-nav">
             <li class="nav-item">
                 <a class="nav-link" th:href="@{/books}">Books</a>
+            </li>
+            <li>
+                <a class="nav-link" th:href="@{/users}">Users</a>
             </li>
         </ul>
     </div>
@@ -69,41 +71,41 @@
                     </div>
 
                   <!--  <div class ="form-group">
+
                         <label> Book genre </label>
                         <input
                                 type = "text"
                                 name = "genre"
-                                th:field = "*{genre}"
+                                th:field = "*{genres}"
                                 class = "form-control"
                                 placeholder="Enter Book Genre"
                         />
                     </div>-->
-
-                    <div class="form-row">
+                    <div class="form-control">
                         <div class="col-auto">
                             <label> Book genre </label>
-                            <select class="form-control custom-select" id="genre" name="genre">
-                                <option selected>Genre:</option>
-                                <option >Historical</option>
-                                <option >Comedy</option>
-                                <option >Fantasy</option>
-                                <option >Sci-fi</option>
+                            <select class="form-control" id="${genresList}"  name = "genre" >
+                                <option th:each="genre : ${genresList}"
+                                    th:value="${genre.genre_id}"
+                                    th:text="${genre.genre_name}"
+                                        th:field = "*{genre}">
+                                </option>
+
                             </select>
                             </label>
+
                         </div>
                     </div>
-
                     <div class ="form-group">
                         <label> Book quantity </label>
                         <input
                                 type = "text"
-                                name = "genre"
+                                name = "total_quantity"
                                 th:field = "*{total_quantity}"
                                 class = "form-control"
                                 placeholder="Enter Book quantity"
                         />
                     </div>
-
 
 
                     <div class = "text-center">

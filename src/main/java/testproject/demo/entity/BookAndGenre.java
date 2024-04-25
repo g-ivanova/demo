@@ -1,59 +1,52 @@
 package testproject.demo.entity;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.*;
 
 
-@Entity
-@Table(name="books") //if we have db
-public class Book {
+public class BookAndGenre {
 
-    //test changes
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY) //generate the primary key value by the database itself using the auto-increment column
+
     private int book_id;
-    @Column(name="book_name")
+
     private String name;
-    @Column(name="book_author")
+
     private String author;
-    @Column(name="book_year")
+
     private int year;
-    @Column(name="genre_id")
-    private int genre;
-    @Column(name="total_quantity")
+
+    private String genre;
+
     private int total_quantity;
-    @Column(name="borrowed_quantity")
+
     private int borrowed_quantity;
 
-
-    public Book(){}
-
-    public Book(int id, String name, String author, int year, int genre, int total_quantity) {
-        this.book_id = id;
+    public BookAndGenre(){}
+    public BookAndGenre(String name, String author, int year, String genre, int total_quantity, int borrowed_quantity) {
         this.name = name;
         this.author = author;
         this.year = year;
         this.genre = genre;
         this.total_quantity = total_quantity;
+        this.borrowed_quantity = borrowed_quantity;
     }
 
-    public Book(String name, String author, int year, int genre, int total_quantity, int borrowed_quantity) {
+    public BookAndGenre(int book_id, String name, String author, int year, String genre, int total_quantity, int borrowed_quantity) {
         super();
+        this.book_id = book_id;
         this.name = name;
         this.author = author;
         this.year = year;
         this.genre = genre;
-        this.total_quantity=total_quantity;
-        this.borrowed_quantity=borrowed_quantity;
+        this.total_quantity = total_quantity;
+        this.borrowed_quantity = borrowed_quantity;
     }
 
-    public int getId() {
+    public int getBook_id() {
         return book_id;
     }
 
-    public void setId(int id) {
-        this.book_id = id;
+    public void setBook_id(int book_id) {
+        this.book_id = book_id;
     }
 
     public String getName() {
@@ -80,11 +73,11 @@ public class Book {
         this.year = year;
     }
 
-    public int getGenre() {
+    public String getGenre() {
         return genre;
     }
 
-    public void setGenre(int genre) {
+    public void setGenre(String genre) {
         this.genre = genre;
     }
 

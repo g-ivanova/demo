@@ -11,6 +11,7 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import testproject.demo.entity.Book;
 import testproject.demo.repository.BookRepository;
 
+
 @SpringBootApplication
 public class BookApplication
         //extends SpringBootServletInitializer
