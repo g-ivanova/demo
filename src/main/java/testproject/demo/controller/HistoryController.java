@@ -18,6 +18,8 @@ import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 @Controller
@@ -59,20 +61,20 @@ public class HistoryController {
 
             HistoryOfBooksAndUsers historyOfBooksAndUsers=new HistoryOfBooksAndUsers(borrowed_id,book_id,bookname,user_id,userfname,userlname,userphone,date_borrowed,date_returned);
             historyList.add(historyOfBooksAndUsers);
+            Collections.sort(historyList, Comparator.comparingInt(HistoryOfBooksAndUsers::getBorrowed_history_id).reversed());
         }
         //model.addAttribute(")
         model.addAttribute("historyList",historyList);
         return "history";
     }
 
-
     @GetMapping("/history/return/{id}")
     public String updateDateReturned(@PathVariable int id, Model model){
 
         model.addAttribute("history",borrowedHistoryService.getBorrowedHistoryById(id));
         model.addAttribute("userfname",userService.getUserById(borrowedHistoryService.getBorrowedHistoryById(id).getUserId()).getFname());
-        model.addAttribute("userlname",userService.getUserById(borrowedHistoryService.getBorrowedHistoryById(id).getUserId()).getLname());
-        model.addAttribute("bookname",bookService.getBookById(borrowedHistoryService.getBorrowedHistoryById(id).getBookId()).getName());
+       model.addAttribute("userlname",userService.getUserById(borrowedHistoryService.getBorrowedHistoryById(id).getUserId()).getLname());
+       model.addAttribute("bookname",bookService.getBookById(borrowedHistoryService.getBorrowedHistoryById(id).getBookId()).getName());
         model.addAttribute("userphone",userService.getUserById(borrowedHistoryService.getBorrowedHistoryById(id).getUserId()).getPhone());
 
         return "return_book"; //html file
@@ -82,27 +84,24 @@ public class HistoryController {
     public String returnBook(@PathVariable int id, @ModelAttribute("history") BorrowedHistory borrowedHistory, Model mode) throws ParseException {
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
-       /* SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
         java.util.Date pickedDate=simpleDateFormat.parse(String.valueOf(borrowedHistory.getDateReturned()));
         java.util.Date today=new java.util.Date();
-        System.out.println(borrowedHistoryService.getBorrowedHistoryById(id).getDateBorrowed());
         java.util.Date borrowedDate=simpleDateFormat.parse( borrowedHistoryService.getBorrowedHistoryById(id).getDateBorrowed());
 
         if(pickedDate.after(today) || pickedDate.before(borrowedDate)){
             JOptionPane.showMessageDialog(jf, "Date can not be after today and before the borrowing date!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-           // return "return_book";
         }
-        else {*/
+        else {
             BorrowedHistory existingBorrowedHistory = borrowedHistoryService.getBorrowedHistoryById(id);
             existingBorrowedHistory.setDateReturned(String.valueOf(borrowedHistory.getDateReturned()));
             bookService.getBookById(borrowedHistoryService.getBorrowedHistoryById(id).getBookId()).setBorrowed_quantity(bookService.getBookById(borrowedHistoryService.getBorrowedHistoryById(id).getBookId()).getBorrowed_quantity()-1);
 
             JOptionPane.showMessageDialog(jf, "Successfull!",
-                    "Updated existing user!", JOptionPane.INFORMATION_MESSAGE);
-
+                    "Succesfull return!", JOptionPane.INFORMATION_MESSAGE);
             borrowedHistoryService.updateBorrowedHistory(existingBorrowedHistory);
-     //  }
+      }
             return "redirect:/history";
 
     }
@@ -148,11 +147,8 @@ public class HistoryController {
                 HistoryOfBooksAndUsers historyOfBooksAndUsers=new HistoryOfBooksAndUsers(borrowed_id,book_id,bookname,user_id,userfname,userlname,userphone,date_borrowed,date_returned);
                 historyList.add(historyOfBooksAndUsers);
             }
-            //model.addAttribute(")
             model.addAttribute("historyList",historyList);
             return "history";
-
-
         } else {
             JOptionPane.showMessageDialog(jf, "Nothing found!",
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);

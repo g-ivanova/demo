@@ -11,10 +11,12 @@ import testproject.demo.repository.UserRepository;
 import testproject.demo.service.BookService;
 import testproject.demo.service.BorrowedHistoryService;
 import testproject.demo.service.GenreService;
+import testproject.demo.service.UserService;
 
 
 import javax.swing.*;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.*;
 
 
@@ -31,13 +33,14 @@ public class BookController {
     UserRepository userRepository;
 
     @Autowired
-    UserRepository userService;
-    @Autowired
     BorrowedHistoryService historyService;
 
 
     @Autowired
     private GenreService genreService;
+
+    @Autowired
+    private UserService userService;
 
     public BookController(BookService bookService) {
         super();
@@ -55,7 +58,6 @@ public class BookController {
            BookAndGenre bookandgenre = new BookAndGenre(bookService.getAllBooks().get(i).getId(),bookService.getAllBooks().get(i).getName(), bookService.getAllBooks().get(i).getAuthor(), bookService.getAllBooks().get(i).getYear(), genreName, bookService.getAllBooks().get(i).getTotal_quantity(), bookService.getAllBooks().get(i).getBorrowed_quantity());
            genresName.add(bookandgenre);
        }
-       //model.addAttribute(")
        model.addAttribute("genresName",genresName);
         return "books";
     }
@@ -69,11 +71,10 @@ public class BookController {
         for (Genre genree:genresList){
             genres.put(genree.getGenre_id(),genree.getGenre_name());
         }
-
         model.addAttribute("genresList",genresList);
         model.addAttribute("genres",genres);
         System.out.println(genres.keySet());
-        return "add_books"; //html file
+        return "add_books";
     }
 
 
@@ -83,43 +84,32 @@ public class BookController {
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
 
-
         if(book.getName()=="") {
             JOptionPane.showMessageDialog(jf, "Name of the book can not be empty!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-           return "add_books";
-
         }
         if(book.getAuthor()=="") {
             JOptionPane.showMessageDialog(jf, "Name of the author can not be empty!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-            return "add_books";
         }
-
-        if (!String.valueOf(book.getYear()).matches("\\d+")) {
-            JOptionPane.showMessageDialog(jf, "Year of the book must contain only numbers!",
-                    "Incorect field!", JOptionPane.ERROR_MESSAGE);
-            return "add_books";
+        for(char chars: String.valueOf(book.getYear()).toCharArray()){
+            if(!Character.isDigit(chars)){
+                JOptionPane.showMessageDialog(jf, "Year of the book must contain only numbers!",
+                        "Incorect field!", JOptionPane.ERROR_MESSAGE);
+            }
         }
-
         if(book.getYear()>2024 || book.getYear()<100){
             JOptionPane.showMessageDialog(jf, "Year of the book must be in the range of 100 and 2024!",
                     "Inccorect field!", JOptionPane.ERROR_MESSAGE);
-            return "add_books";
         }
-
         if (!String.valueOf(book.getTotal_quantity()).matches("\\d+")) {
             JOptionPane.showMessageDialog(jf, "Quantity of the book must contain only numbers!",
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);
-            return "edit_books";
         }
-
         if(book.getTotal_quantity()<0){
             JOptionPane.showMessageDialog(jf, "Quantity of the book must be bigger than 0!",
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);
-            return "edit_books";
         }
-       // book.setGenre(Integer.parseInt(genreRepository.findGenreByName(book.getGenre())));
 
         JOptionPane.showMessageDialog(jf, "Successfull!",
                 "Added new book!", JOptionPane.INFORMATION_MESSAGE);
@@ -142,7 +132,7 @@ public class BookController {
 
 
         model.addAttribute("book",bookService.getBookById(id));
-        return "edit_books"; //html file
+        return "edit_books";
     }
 
 
@@ -166,8 +156,6 @@ public class BookController {
 
             }
         }
-
-
         return "redirect:/books";
     }
 
@@ -179,49 +167,37 @@ public class BookController {
         for (Genre genree:genresList){
             genres.put(genree.getGenre_id(),genree.getGenre_name());
         }
-
         model.addAttribute("genresList",genresList);
         model.addAttribute("genres",genres);
-
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
         if(book.getName()=="") {
             JOptionPane.showMessageDialog(jf, "Name of the book can not be empty!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-           // return "edit_books";
         }
         if(book.getAuthor()=="") {
             JOptionPane.showMessageDialog(jf, "Name of the author can not be empty!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-        //    return "edit_books";
         }
         if(genre.equals("Genre:")) {
             JOptionPane.showMessageDialog(jf, "Genre of the book can not be empty!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-          //  return "edit_books";
         }
 
             if (book.getYear() > 2024 || book.getYear() < 100) {
                 JOptionPane.showMessageDialog(jf, "Year of the book must be in the range of 100 and 2024!",
                         "Inccorect field!", JOptionPane.ERROR_MESSAGE);
-                //   return "edit_books";
             }
-
-
-        if (book.getTotal_quantity()<1) {
+            if (book.getTotal_quantity()<1) {
             JOptionPane.showMessageDialog(jf, "Quantity of the book must cbe at least 1!",
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);
-          // return "edit_books";
-        }
-
-
-        if(book.getTotal_quantity()<book.getBorrowed_quantity()){
+            }
+            if(book.getTotal_quantity()<bookService.getBookById(id).getBorrowed_quantity()){
             JOptionPane.showMessageDialog(jf, "There are already more books borrowed!",
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);
-          //  return "edit_books";
-        }
+            }
 
-        if(book.getName()!="" && book.getAuthor()!="" && book.getGenre()!=0 && book.getYear()<2024 && book.getYear()>100 && String.valueOf(book.getYear()).matches("\\d+") && book.getTotal_quantity()>0 && book.getTotal_quantity()>book.getBorrowed_quantity()){
+        if(book.getName()!="" && book.getAuthor()!="" && book.getGenre()!=0 && book.getYear()<2024 && book.getYear()>100 && String.valueOf(book.getYear()).matches("\\d+") && book.getTotal_quantity()>0 && book.getTotal_quantity()>bookService.getBookById(id).getBorrowed_quantity()){
         Book existingBook = bookService.getBookById(id);
         existingBook.setId(id);
         existingBook.setAuthor(book.getAuthor());
@@ -252,10 +228,6 @@ public class BookController {
         return "redirect:/books";
     }
 
-    @PostMapping(value="/books/search")
-    public String forwardSearch(@RequestParam String searchText) {
-        return "redirect:/books/search" + searchText;
-    }
     @GetMapping("/books/search/{searchText}")
     public String searchArticles(Model model,@PathVariable String searchText) {
         JFrame jf=new JFrame();
@@ -279,12 +251,13 @@ public class BookController {
         } else {
             JOptionPane.showMessageDialog(jf, "Nothing found!",
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("False"+searchText);
+
+
         }
-        return "books";
+        return "redirect:/books";
     }
 
-    @GetMapping("/books/borrow/{id}")
+    /*@PostMapping("/books/borrow/{id}")
     public String borrowBookForm(@PathVariable int id, @ModelAttribute("book") Book book, Model model){
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
@@ -302,14 +275,14 @@ public class BookController {
             model.addAttribute("usersList",usersList);
             model.addAttribute("book",bookService.getBookById(id));
             return "borrow_books";
-           /* if (existingBook.getBorrowed_quantity() == 0) {
+            if (existingBook.getBorrowed_quantity() == 0) {
                 existingBook.setBorrowed_quantity(1);
                 JOptionPane.showMessageDialog(jf, "Successfull!",
                         "Borrowed book!", JOptionPane.INFORMATION_MESSAGE);
                 bookService.updateBook(existingBook);
 
             }
-            else {*/
+            else {
             // existingBook.setBorrowed_quantity(existingBook.getBorrowed_quantity() + 1);
             //JOptionPane.showMessageDialog(jf, "Successfull!",
             //  "Borrowed book!", JOptionPane.INFORMATION_MESSAGE);
@@ -335,5 +308,94 @@ public class BookController {
         return "books";
     }
 
+    */
 
+    @GetMapping("/books/borrow/{id}")
+    public String borrowBookForm(@PathVariable int id, Model model){
+        JFrame jf=new JFrame();
+        jf.setAlwaysOnTop(true);
+        Book selectedBook= bookService.getBookById(id);
+        if(selectedBook.getTotal_quantity()<=selectedBook.getBorrowed_quantity()){
+            JOptionPane.showMessageDialog(jf, "Not enough quantity!!",
+                    "Error!", JOptionPane.ERROR_MESSAGE);
+        }
+        else{
+        List<User> genresName= new ArrayList<User>();
+        String genreName="";
+        model.addAttribute("usersList",userService.getAllUsers());
+        model.addAttribute("bookID",id);
+        return "borrow_books";}
+        return "redirect:/books";
+    }
+    @PostMapping(value="/books/borrow/search")
+    public String forwardSearchUsers(@RequestParam String searchText,@RequestParam String bookID) {
+        return "redirect:/books/borrow/" +bookID+"/search/"+searchText;
+    }
+    @GetMapping("/books/borrow/{bookID}/search/{searchText}")
+    public String searchArticlesUser(Model model, @PathVariable String bookID,@PathVariable String searchText) {
+        JFrame jf=new JFrame();
+        jf.setAlwaysOnTop(true);
+        List<User> foundArticles=userService.searchUsers(searchText);
+        System.out.println(bookID);
+
+        if (!foundArticles.isEmpty()) {
+            model.addAttribute("usersList",foundArticles);
+            return "borrow_books";
+
+
+        } else {
+            JOptionPane.showMessageDialog(jf, "Nothing found!",
+                    "Incorrect field!", JOptionPane.ERROR_MESSAGE);
+        }
+        //return "borrow_books";
+        return "borrow_books";
+    }
+
+   /* @PostMapping(value="/books/borrow/{id}/{user}")
+    public String borrowBooks(@PathVariable int id, @ModelAttribute("book") Book book, Model model, @RequestParam String user)  {
+        String names="";
+        String[] first_name=user.split(" ");
+        List<User> usersList=(List<User>) userRepository.findUserByName(first_name[0]);
+        System.out.println(first_name[0]);
+        Map<Integer,String> usersNames=new HashMap<Integer,String>();
+        Map<Integer,String> usersPhones=new HashMap<Integer,String>();
+        for (User userr:usersList){
+            names=userr.getFname()+" "+userr.getLname();
+            usersNames.put(userr.getUser_id(),names);
+            usersPhones.put(userr.getUser_id(),userr.getPhone());
+        }
+        model.addAttribute("usersNames",usersNames);
+        model.addAttribute("usersPhones",usersPhones);
+        model.addAttribute("usersList",usersList);
+
+        model.addAttribute("book",bookService.getBookById(id));
+        model.addAttribute("user",userService.getAllUsers());
+        return "borrow_books";
+    }*/
+
+    @PostMapping("/books/borrow/save")
+    public String saveBorrowedBook(@ModelAttribute("user") User user, Model model,@RequestParam String bookID,@RequestParam String userID) throws Exception {
+        JFrame jf=new JFrame();
+        jf.setAlwaysOnTop(true);
+        Book selectedBook=bookService.getBookById(Integer.parseInt(bookID));
+
+
+        LocalDate currentDate = LocalDate.now();
+
+        String today = currentDate.toString();
+
+
+
+        BorrowedHistory borrowedHistory=new BorrowedHistory(Integer.parseInt(bookID),Integer.parseInt(userID),today,"");
+        System.out.println("userID:"+userID);
+        System.out.println("bookId:"+bookID);
+        System.out.println("date:"+today);
+
+        selectedBook.setBorrowed_quantity(selectedBook.getBorrowed_quantity()+1);
+
+        JOptionPane.showMessageDialog(jf, "Successfull!",
+                "Added new user!", JOptionPane.INFORMATION_MESSAGE);
+        historyService.saveBorrowedHistory(borrowedHistory);
+        return "redirect:/books";
+    }
 }

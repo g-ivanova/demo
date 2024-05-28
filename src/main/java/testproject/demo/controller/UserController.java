@@ -23,14 +23,11 @@ import java.util.Map;
 @Controller
 public class UserController {
 
-
     @Autowired
     private UserService userService;
 
     @Autowired
     private UserRepository userRepository;
-
-
 
     public UserController(UserService userService) {
         super();
@@ -52,8 +49,6 @@ public class UserController {
         model.addAttribute("user",user);
         return "add_users";
     }
-
-
 
     @PostMapping("/users")
     public String saveUser(@ModelAttribute("user") User user, Model model) throws Exception {

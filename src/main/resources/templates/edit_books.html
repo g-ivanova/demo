@@ -10,14 +10,11 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <!-- Brand -->
 
-    <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
 
-    <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -62,49 +59,13 @@
                     <div class ="form-group">
                         <label> Book Year </label>
                         <input
-                                type = "text"
+                                type = "number"
                                 name = "year"
                                 th:field = "*{year}"
                                 class = "form-control"
                                 placeholder="Enter Book Year"
                         />
                     </div>
-
-                    <!-- <div class ="form-group">
-                         <label> Book Genre </label>
-                         <input
-                                 type = "text"
-                                 name = "genre"
-                                 th:field = "*{genre}"
-                                 class = "form-control"
-                                 placeholder="Enter Book Genre"
-                         />
-                     </div>-->
-
-
-                   <!-- <div class="dropdown">
-                        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Dropdown button
-                        </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" th:href = "@{/books/historical/{id}(id=${book.id})}">Historical</a>
-                        </div>
-                    </div>-->
-
-
-                  <!--  <div class="form-row">
-                        <div class="col-auto">
-                            <label> Book Genre </label>
-                                <select class="form-control custom-select" id="genre" name="genre">
-                                    <option selected>Genre:</option>
-                                    <option >Historical</option>
-                                    <option >Comedy</option>
-                                    <option >Fantasy</option>
-                                    <option >Sci-fi</option>
-                                </select>
-                            </label>
-                        </div>
-                    </div>-->
 
                     <div class="form-control">
                         <div class="col-auto">
