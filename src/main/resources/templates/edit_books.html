@@ -10,11 +10,9 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
-
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -31,11 +29,11 @@
 <div class = "container">
     <div class = "row">
         <div class ="col-lg-6 col-md-6 col-sm-6 container justify-content-center card">
-            <h1 class = "text-center"> Update books </h1>
+            <h1 class = "text-center">Update book</h1>
             <div class = "card-body">
                 <form th:action="@{/books/{id} (id=${book.id})}" th:object = "${book}" method="POST">
                     <div class ="form-group">
-                        <label> Book name </label>
+                        <label><b>Book name</b></label>
                         <input
                                 type = "text"
                                 name = "name"
@@ -44,9 +42,8 @@
                                 placeholder="Enter Book Name"
                         />
                     </div>
-
                     <div class ="form-group">
-                        <label> Book author </label>
+                        <label><b>Book author</b></label>
                         <input
                                 type = "text"
                                 name = "author"
@@ -55,9 +52,8 @@
                                 placeholder="Enter Book Author"
                         />
                     </div>
-
                     <div class ="form-group">
-                        <label> Book Year </label>
+                        <label><b>Book Year</b></label>
                         <input
                                 type = "number"
                                 name = "year"
@@ -66,10 +62,7 @@
                                 placeholder="Enter Book Year"
                         />
                     </div>
-
-                    <div class="form-control">
-                        <div class="col-auto">
-                            <label> Book genre </label>
+                            <label><b>Book genre</b></label>
                             <select class="form-control" id="${genresList}"  name = "genre" >
                                 <option th:each="genre : ${genresList}"
                                         th:value="${genre.genre_id}"
@@ -79,12 +72,9 @@
 
                             </select>
                             </label>
-
-                        </div>
-                    </div>
-
+                    <p></p>
                     <div class ="form-group">
-                         <label> Book quantity </label>
+                         <label><b>Book quantity</b></label>
                          <input
                                  type = "text"
                                  name = "genre"
@@ -93,14 +83,12 @@
                                  placeholder="Enter Book quantity"
                          />
                      </div>
-
                      <div class = "text-center">
                          <button type="submit" class = "btn btn-outline-dark btn-lg">
                              Submit
                          </button>
                      </div>
                  </form>
-
              </div>
          </div>
      </div>

@@ -10,14 +10,9 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <!-- Brand -->
-
-    <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -31,16 +26,26 @@
 </nav>
 <br>
 <br>
+<style>
+    .search {
+            display: flex;
+            justify-content: left;
+                }
+    input[type=submit] {
+    margin-left:5px;
+
+}
+</style>
 <div class ="container">
     <div class = "row">
-        <h1> All Users </h1>
+        <h1>Choose user</h1>
     </div>
     <form th:action="@{/books/borrow/search}" method="POST">
-    <div class = "row">
-        <input type="text" id="searchText" style="height:30px;width: 300px;" name="searchText" maxlength="10" placeholder="searchText" />
+        <div class="search" align="left">
+        <input type="text" id="searchText" style="height:30px;width: 300px;" name="searchText" maxlength="10" placeholder="Search" />
         <input type="hidden" th:value="${bookID}" name="bookID" />
-        <input type="submit" name="searchButton" value= "searchButton" class = "btn btn-dark btn-sm mb-3" ></button>
-    </div>
+        <input type="submit" name="searchButton" value= "Search by name or phone" class = "btn btn-dark btn-sm mb-3" ></button>
+        </div>
     </form>
     <table class = "table">
         <thead class="thead-dark">
@@ -51,28 +56,23 @@
             <th> Actions </th>
         </tr>
         </thead>
-
         <tbody>
         <tr th:each = "user : ${usersList}">
             <td th:text = "${user.fname}"></td>
             <td th:text = "${user.lname}"></td>
             <td th:text = "${user.phone}"></td>
             <td>
-
                 <form th:action="@{/books/borrow/save}" method="POST">
                     <div class = "row">
                         <input type="hidden" th:value="${bookID}" name="bookID" />
                         <input type="hidden" th:value="${user.user_id}" name="userID" />
-                        <input type="submit" name="searchButton" value= "searchButton" class = "btn btn-dark btn-sm mb-3" ></button>
+                        <input type="submit" name="Choose" value= "Choose" class = "btn btn-dark btn-sm mb-3" ></button>
                     </div>
                 </form>
-
             </td>
         </tr>
         </tbody>
-
     </table>
-
 </div>
 </body>
 </html>

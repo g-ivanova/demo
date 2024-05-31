@@ -5,7 +5,7 @@ import testproject.demo.entity.BorrowedHistory;
 
 import java.util.List;
 
-public interface BorrowedHistoryService {
+public interface BorrowedHistoryService {//interface extends JpaRepository
 
     List<BorrowedHistory> getAllBorrowedHistory();
 

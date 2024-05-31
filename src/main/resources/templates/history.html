@@ -15,14 +15,9 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <!-- Brand -->
-
-    <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -36,18 +31,18 @@
 </nav>
 <br>
 <br>
+<style>
+    .search {
+            display: flex;
+            justify-content: left;
+                }
+    button{margin-left:5px;}
+</style>
 <div class ="container">
-    <div class = "row">
         <h1> History </h1>
-    </div>
-
-    <div class = "row">
-        <div class = "col-lg-3">
-            <a th:href = "@{/books/add}" button type="button" class = "btn btn-dark btn-sm mb-3"> Add Books</a>
-        </div>
-        <input type="text" id="searchText" style="height:30px;width: 300px;" name="searchText" maxlength="10" placeholder="searchText" />
-        <button type="button" class = "btn btn-dark btn-sm mb-3" onclick="createUrl()"> Search Books</button>
-
+        <div class="search" align="center">
+            <input type="text" id="searchText" style="height:30px;width: 300px;" name="searchText" maxlength="10" placeholder="Search by book"/>
+            <button type="button" class="btn btn-dark btn-sm mb-3" onclick="createUrl()">Search</button>
         <script type="text/javascript">
             function createUrl(){
             let searchText = document.getElementById("searchText").value;
@@ -69,7 +64,6 @@
             <th> Actions </th>
         </tr>
         </thead>
-
         <tbody>
         <tr th:each = "history : ${historyList}">
             <td th:text = "${history.book_id}"></td>
@@ -81,7 +75,6 @@
             <td th:text = "${history.date_borrowed}"></td>
             <td th:text = "${history.date_returned}" >
             </td>
-
             <td>
                 <style>
                     .buttonSubmit{
@@ -89,26 +82,10 @@
                     }
                 </style>
                 <a class ="btn btn-outline-dark btn-sm" th:href = "@{/history/return/{id}(id=${history.borrowed_history_id})}" >Return</a>
-              <!-- <script type="text/javascript">
-                    function hideButton(){
-                    button=document.getElementById("buttonSubmit");
-                    if($history.date_returned===''){
-                     button.style.visibility = 'visible';
-                     }
-                    }
-                </script>-->
-               <!-- <a class ="btn btn-outline-danger btn-sm" th:href = "@{/books/{id}(id=${book.book_id})}">Delete</a>
-
-                <a class ="btn btn-outline-success btn-sm" th:href = "@{/books/borrow/{id}(id=${book.book_id})}">Borrow</a>
-
-                <a class ="btn btn-outline-warning btn-sm" th:href = "@{/books/return/{id}(id=${book.book_id})}">Return</a>-->
-
             </td>
         </tr>
         </tbody>
-
     </table>
-
 </div>
 </body>
 </html>

@@ -6,7 +6,7 @@ import testproject.demo.entity.Genre;
 import java.util.List;
 import java.util.Optional;
 
-public interface GenreService {
+public interface GenreService {//interface extends JpaRepository
 
     List<Genre> getAllGenres();
 

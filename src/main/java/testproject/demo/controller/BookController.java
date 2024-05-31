@@ -27,28 +27,18 @@ public class BookController {
 @Autowired
     private BookService bookService;
 
-@Autowired
-    GenreRepository genreRepository;
-    @Autowired
-    UserRepository userRepository;
-
-    @Autowired
+    @Autowired //used to inject instance of a class into another class. Dependency injection is a programming technique that makes a class independent of its dependencies.
     BorrowedHistoryService historyService;
-
-
     @Autowired
     private GenreService genreService;
-
     @Autowired
     private UserService userService;
-
     public BookController(BookService bookService) {
         super();
         this.bookService = bookService;
     }
-
-  @GetMapping(value="/books")
-    public String listBooks(Model model){ //used to transfer data between the view and controller
+    @GetMapping(value="/books") //shortcut for RequestMapping(method=RequestMethod.GET)
+    public String listBooks(Model model){ //Model - used to transfer data between the view and controller
         List<BookAndGenre> genresName= new ArrayList<BookAndGenre>();
         String genreName="";
        model.addAttribute("books",bookService.getAllBooks());
@@ -63,7 +53,7 @@ public class BookController {
     }
 
     @GetMapping(value="/books/add")
-    public String createBookForm(Model model, @ModelAttribute("selectedOption") Genre selectedOption){
+    public String createBookForm(Model model){
         Book book = new Book();
         model.addAttribute("book",book);
         List<Genre> genresList=(List<Genre>) genreService.getAllGenres();
@@ -73,14 +63,12 @@ public class BookController {
         }
         model.addAttribute("genresList",genresList);
         model.addAttribute("genres",genres);
-        System.out.println(genres.keySet());
         return "add_books";
     }
 
 
-
     @PostMapping("/books")
-    public String saveBook(@ModelAttribute("book") Book book, Model model) throws Exception {
+    public String saveBook(@ModelAttribute("book") Book book) throws Exception {
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
 
@@ -220,7 +208,7 @@ public class BookController {
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
         int dialogButton = JOptionPane.YES_NO_OPTION;
-        int dialogResult = JOptionPane.showConfirmDialog (jf, "Are you sure you want to delete that book?","Warning",dialogButton);
+        int dialogResult = JOptionPane.showConfirmDialog (jf, "Are you sure you want to delete that book? You will delete this book with all of its history!","Warning",dialogButton);
         if(dialogResult == 0){
             bookService.deleteBookById(id);
             return "redirect:/books";
@@ -233,7 +221,6 @@ public class BookController {
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
         List<Book> foundArticles =bookService.searchBooks(searchText);
-        System.out.println(searchText);
 
         if (!foundArticles.isEmpty()) {
             List<BookAndGenre> genresName= new ArrayList<BookAndGenre>();
@@ -247,7 +234,6 @@ public class BookController {
             model.addAttribute("genresName",genresName);
             return "books";
 
-
         } else {
             JOptionPane.showMessageDialog(jf, "Nothing found!",
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);
@@ -256,59 +242,6 @@ public class BookController {
         }
         return "redirect:/books";
     }
-
-    /*@PostMapping("/books/borrow/{id}")
-    public String borrowBookForm(@PathVariable int id, @ModelAttribute("book") Book book, Model model){
-        JFrame jf=new JFrame();
-        jf.setAlwaysOnTop(true);
-
-        List<User>usersList=userService.findAll();
-
-        Book existingBook = bookService.getBookById(id);
-        // if(existingBook.getBorrowed_quantity()!=0){
-        if(existingBook.getBorrowed_quantity() == existingBook.getTotal_quantity()) {
-            JOptionPane.showMessageDialog(jf, "Total quantity is equal to the borrowed books!",
-                    "Not enough quantity!", JOptionPane.ERROR_MESSAGE);
-        }
-        // }
-        else {
-            model.addAttribute("usersList",usersList);
-            model.addAttribute("book",bookService.getBookById(id));
-            return "borrow_books";
-            if (existingBook.getBorrowed_quantity() == 0) {
-                existingBook.setBorrowed_quantity(1);
-                JOptionPane.showMessageDialog(jf, "Successfull!",
-                        "Borrowed book!", JOptionPane.INFORMATION_MESSAGE);
-                bookService.updateBook(existingBook);
-
-            }
-            else {
-            // existingBook.setBorrowed_quantity(existingBook.getBorrowed_quantity() + 1);
-            //JOptionPane.showMessageDialog(jf, "Successfull!",
-            //  "Borrowed book!", JOptionPane.INFORMATION_MESSAGE);
-            // bookService.updateBook(existingBook);
-
-            //  }
-        }
-
-
-        return "borrow_books";
-    }
-    @PostMapping("/books/borrow/{id}")
-    public String borrowBook(Model model,@PathVariable int id,@RequestParam String phone) {
-        JFrame jf=new JFrame();
-        jf.setAlwaysOnTop(true);
-        SimpleDateFormat simpleDateFormat=new SimpleDateFormat("yyyy-MM-dd");
-        java.util.Date today=new java.util.Date();
-
-        Book borrowedBook=bookService.getBookById(id);
-        borrowedBook.setBorrowed_quantity(borrowedBook.getBorrowed_quantity()+1);
-        System.out.println(phone);
-       // historyService.saveBorrowedHistory(new BorrowedHistory(borrowedBook.getId(),user_id,String.valueOf(today),""));
-        return "books";
-    }
-
-    */
 
     @GetMapping("/books/borrow/{id}")
     public String borrowBookForm(@PathVariable int id, Model model){
@@ -331,71 +264,6 @@ public class BookController {
     public String forwardSearchUsers(@RequestParam String searchText,@RequestParam String bookID) {
         return "redirect:/books/borrow/" +bookID+"/search/"+searchText;
     }
-    @GetMapping("/books/borrow/{bookID}/search/{searchText}")
-    public String searchArticlesUser(Model model, @PathVariable String bookID,@PathVariable String searchText) {
-        JFrame jf=new JFrame();
-        jf.setAlwaysOnTop(true);
-        List<User> foundArticles=userService.searchUsers(searchText);
-        System.out.println(bookID);
-
-        if (!foundArticles.isEmpty()) {
-            model.addAttribute("usersList",foundArticles);
-            return "borrow_books";
 
 
-        } else {
-            JOptionPane.showMessageDialog(jf, "Nothing found!",
-                    "Incorrect field!", JOptionPane.ERROR_MESSAGE);
-        }
-        //return "borrow_books";
-        return "borrow_books";
-    }
-
-   /* @PostMapping(value="/books/borrow/{id}/{user}")
-    public String borrowBooks(@PathVariable int id, @ModelAttribute("book") Book book, Model model, @RequestParam String user)  {
-        String names="";
-        String[] first_name=user.split(" ");
-        List<User> usersList=(List<User>) userRepository.findUserByName(first_name[0]);
-        System.out.println(first_name[0]);
-        Map<Integer,String> usersNames=new HashMap<Integer,String>();
-        Map<Integer,String> usersPhones=new HashMap<Integer,String>();
-        for (User userr:usersList){
-            names=userr.getFname()+" "+userr.getLname();
-            usersNames.put(userr.getUser_id(),names);
-            usersPhones.put(userr.getUser_id(),userr.getPhone());
-        }
-        model.addAttribute("usersNames",usersNames);
-        model.addAttribute("usersPhones",usersPhones);
-        model.addAttribute("usersList",usersList);
-
-        model.addAttribute("book",bookService.getBookById(id));
-        model.addAttribute("user",userService.getAllUsers());
-        return "borrow_books";
-    }*/
-
-    @PostMapping("/books/borrow/save")
-    public String saveBorrowedBook(@ModelAttribute("user") User user, Model model,@RequestParam String bookID,@RequestParam String userID) throws Exception {
-        JFrame jf=new JFrame();
-        jf.setAlwaysOnTop(true);
-        Book selectedBook=bookService.getBookById(Integer.parseInt(bookID));
-
-
-        LocalDate currentDate = LocalDate.now();
-
-        String today = currentDate.toString();
-
-
-
-        BorrowedHistory borrowedHistory=new BorrowedHistory(Integer.parseInt(bookID),Integer.parseInt(userID),today,"");
-        System.out.println("userID:"+userID);
-        System.out.println("bookId:"+bookID);
-        System.out.println("date:"+today);
-
-        selectedBook.setBorrowed_quantity(selectedBook.getBorrowed_quantity()+1);
-
-        JOptionPane.showMessageDialog(jf, "Successfull!",
-                "Added new user!", JOptionPane.INFORMATION_MESSAGE);
-        historyService.saveBorrowedHistory(borrowedHistory);
-        return "redirect:/books";
-    }
 }

@@ -8,7 +8,7 @@ import testproject.demo.entity.Genre;
 
 import java.util.List;
 
-public interface BookRepository extends JpaRepository<Book,Long> {
+public interface BookRepository extends JpaRepository<Book,Long> { //interface extends JpaRepository
 
     @Query(
             nativeQuery = true,
@@ -24,7 +24,7 @@ public interface BookRepository extends JpaRepository<Book,Long> {
 
 
 
-    List<Book> findByAuthor(String author);
+    List<Book> findByAuthor(String author); //jpa supports find,read,query,count and get
 
     List<Book> findByName(String name);
 

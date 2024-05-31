@@ -10,14 +10,9 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <!-- Brand -->
-
-    <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -31,6 +26,13 @@
 </nav>
 <br>
 <br>
+<style>
+    .search {
+            display: flex;
+            justify-content: center;
+                }
+    button{margin-left:5px;}
+</style>
 <div class ="container">
     <div class = "row">
         <h1> All Users </h1>
@@ -38,17 +40,18 @@
 
     <div class = "row">
         <div class = "col-lg-3">
-            <a th:href = "@{/users/add}" button type="button" class = "btn btn-dark btn-sm mb-3"> Add Users</a>
+            <a th:href = "@{/users/add}" button type="button" class = "btn btn-dark btn-sm mb-3">Add Users</a>
         </div>
-        <input type="text" id="searchText" style="height:30px;width: 300px;" name="searchText" maxlength="10" placeholder="searchText" />
-        <button type="button" class = "btn btn-dark btn-sm mb-3" onclick="createUrl()"> Search Users</button>
+        <div class="search" align="center">
+            <input type="text" id="searchText" style="height:30px;width: 300px;" name="searchText" maxlength="10" placeholder="Search by name or phone"/>
+            <button type="button" class="btn btn-dark btn-sm mb-3" onclick="createUrl()">Search</button>
+        </div>
         <script type="text/javascript">
             function createUrl(){
             let searchText = document.getElementById("searchText").value;
             window.location =  "/users/search/"+searchText;
             }
         </script>
-
     </div>
     <table class = "table">
         <thead class="thead-dark">
@@ -59,7 +62,6 @@
             <th> Actions </th>
         </tr>
         </thead>
-
         <tbody>
         <tr th:each = "user : ${usersList}">
             <td th:text = "${user.fname}"></td>
@@ -67,15 +69,11 @@
             <td th:text = "${user.phone}"></td>
            <td>
                 <a class ="btn btn-outline-dark btn-sm" th:href = "@{/users/edit/{id}(id=${user.user_id})}">Update</a>
-
                 <a class ="btn btn-outline-danger btn-sm" th:href = "@{/users/{id}(id=${user.user_id})}">Delete</a>
-
             </td>
         </tr>
         </tbody>
-
     </table>
-
 </div>
 </body>
 </html>

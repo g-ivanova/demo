@@ -10,14 +10,9 @@
 </head>
 <body>
 <nav class="navbar navbar-expand-md bg-dark navbar-dark">
-    <!-- Brand -->
-
-    <!-- Toggler/collapsibe Button -->
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#collapsibleNavbar">
         <span class="navbar-toggler-icon"></span>
     </button>
-
-    <!-- Navbar links -->
     <div class="collapse navbar-collapse" id="collapsibleNavbar">
         <ul class="navbar-nav">
             <li class="nav-item">
@@ -38,7 +33,7 @@
             <div class = "card-body">
                 <form th:action="@{/users/{id} (id=${user.user_id})}" th:object = "${user}" method="POST">
                     <div class ="form-group">
-                        <label> First name </label>
+                        <label><b>First name</b></label>
                         <input
                                 type = "text"
                                 name = "fname"
@@ -47,9 +42,8 @@
                                 placeholder="Enter First Name"
                         />
                     </div>
-
                     <div class ="form-group">
-                        <label> Last Name </label>
+                        <label><b>Last Name</b></label>
                         <input
                                 type = "text"
                                 name = "lname"
@@ -58,9 +52,8 @@
                                 placeholder="Enter Last Name"
                         />
                     </div>
-
                     <div class ="form-group">
-                        <label> Phone </label>
+                        <label><b>Phone</b></label>
                         <input
                                 type = "text"
                                 name = "phone"
@@ -69,14 +62,12 @@
                                 placeholder="Enter Phone"
                         />
                     </div>
-
                     <div class = "text-center">
                         <button type="submit" class = "btn btn-outline-dark btn-lg">
                             Submit
                         </button>
                     </div>
                 </form>
-
             </div>
         </div>
     </div>

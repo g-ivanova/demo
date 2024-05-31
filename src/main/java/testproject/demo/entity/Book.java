@@ -24,7 +24,7 @@ public class Book {
     @Column(name="total_quantity")
     private int total_quantity;
     @Column(name="borrowed_quantity")
-    private int borrowed_quantity;
+    private int borrowed_quantity=0;
 
 
     public Book(){}

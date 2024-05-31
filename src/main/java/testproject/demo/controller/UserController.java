@@ -73,7 +73,6 @@ public class UserController {
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);
             return "add_users";
         }
-        // book.setGenre(Integer.parseInt(genreRepository.findGenreByName(book.getGenre())));
 
         JOptionPane.showMessageDialog(jf, "Successfull!",
                 "Added new user!", JOptionPane.INFORMATION_MESSAGE);
@@ -85,7 +84,7 @@ public class UserController {
     public String updateUserForm(@PathVariable int id, Model model){
 
         model.addAttribute("user",userService.getUserById(id));
-        return "edit_users"; //html file
+        return "edit_users";
     }
 
     @PostMapping(value="/users/{id}")
@@ -95,17 +94,14 @@ public class UserController {
         if(user.getFname()=="") {
             JOptionPane.showMessageDialog(jf, "Name can not be empty!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-            // return "edit_books";
         }
         if(user.getLname()=="") {
             JOptionPane.showMessageDialog(jf, "Name can not be empty!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-            //    return "edit_books";
         }
         if(user.getPhone()=="") {
             JOptionPane.showMessageDialog(jf, "Phone can not be empty!",
                     "Empty field!", JOptionPane.ERROR_MESSAGE);
-            //  return "edit_books";
         }
 
 

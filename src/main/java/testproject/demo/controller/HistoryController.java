@@ -63,7 +63,6 @@ public class HistoryController {
             historyList.add(historyOfBooksAndUsers);
             Collections.sort(historyList, Comparator.comparingInt(HistoryOfBooksAndUsers::getBorrowed_history_id).reversed());
         }
-        //model.addAttribute(")
         model.addAttribute("historyList",historyList);
         return "history";
     }
@@ -77,9 +76,8 @@ public class HistoryController {
        model.addAttribute("bookname",bookService.getBookById(borrowedHistoryService.getBorrowedHistoryById(id).getBookId()).getName());
         model.addAttribute("userphone",userService.getUserById(borrowedHistoryService.getBorrowedHistoryById(id).getUserId()).getPhone());
 
-        return "return_book"; //html file
+        return "return_book";
     }
-
     @PostMapping(value="/history/{id}")
     public String returnBook(@PathVariable int id, @ModelAttribute("history") BorrowedHistory borrowedHistory, Model mode) throws ParseException {
         JFrame jf=new JFrame();
@@ -107,7 +105,6 @@ public class HistoryController {
     }
 
 
-
     @PostMapping(value="/history/search")
     public String forwardSearch(@RequestParam String searchText) {
         return "redirect:/history/search" + searchText;
@@ -117,7 +114,6 @@ public class HistoryController {
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
         List<Book> foundArticles =bookService.searchBooks(searchText);
-        System.out.println(searchText);
 
         if (!foundArticles.isEmpty()) {
             List<HistoryOfBooksAndUsers> historyList= new ArrayList<HistoryOfBooksAndUsers>();
@@ -133,7 +129,7 @@ public class HistoryController {
             String bookname;
 
             model.addAttribute("searchText");
-            for(int i=0;i<borrowedHistoryService.getAllBorrowedHistory().size();i++) {
+            for(int i=0;i<foundArticles.size();i++) {
                 borrowed_id=borrowedHistoryService.getAllBorrowedHistory().get(i).getId();
                 book_id=borrowedHistoryService.getAllBorrowedHistory().get(i).getBookId();
                 bookname=bookService.getBookById(borrowedHistoryService.getAllBorrowedHistory().get(i).getBookId()).getName();
@@ -152,9 +148,8 @@ public class HistoryController {
         } else {
             JOptionPane.showMessageDialog(jf, "Nothing found!",
                     "Incorrect field!", JOptionPane.ERROR_MESSAGE);
-            System.out.println("False"+searchText);
         }
-        return "history";
+        return "redirect:/history";
     }
 
 
