@@ -208,7 +208,7 @@ public class BookController {
         JFrame jf=new JFrame();
         jf.setAlwaysOnTop(true);
         int dialogButton = JOptionPane.YES_NO_OPTION;
-        int dialogResult = JOptionPane.showConfirmDialog (jf, "Are you sure you want to delete that book? You will delete this book with all of its history!","Warning",dialogButton);
+        int dialogResult = JOptionPane.showConfirmDialog (jf, "Are you sure you want to delete that book and all of its history?","Warning",dialogButton);
         if(dialogResult == 0){
             bookService.deleteBookById(id);
             return "redirect:/books";
@@ -264,6 +264,52 @@ public class BookController {
     public String forwardSearchUsers(@RequestParam String searchText,@RequestParam String bookID) {
         return "redirect:/books/borrow/" +bookID+"/search/"+searchText;
     }
+    @GetMapping("/books/borrow/{bookID}/search/{searchText}")
+    public String searchArticlesUser(Model model, @PathVariable String bookID,@PathVariable String searchText) {
+        JFrame jf=new JFrame();
+        jf.setAlwaysOnTop(true);
+        List<User> foundArticles=userService.searchUsers(searchText);
+        System.out.println(bookID);
+
+        if (!foundArticles.isEmpty()) {
+            model.addAttribute("usersList",foundArticles);
+            return "borrow_books";
+
+
+        } else {
+            JOptionPane.showMessageDialog(jf, "Nothing found!",
+                    "Incorrect field!", JOptionPane.ERROR_MESSAGE);
+        }
+        //return "borrow_books";
+        return "borrow_books";
+    }
+    @PostMapping("/books/borrow/save")
+    public String saveBorrowedBook(@ModelAttribute("user") User user, Model model,@RequestParam String bookID,@RequestParam String userID) throws Exception {
+        JFrame jf=new JFrame();
+        jf.setAlwaysOnTop(true);
+        Book selectedBook=bookService.getBookById(Integer.parseInt(bookID));
+
+
+        LocalDate currentDate = LocalDate.now();
+
+        String today = currentDate.toString();
+
+
+
+        BorrowedHistory borrowedHistory=new BorrowedHistory(Integer.parseInt(bookID),Integer.parseInt(userID),today,"");
+        System.out.println("userID:"+userID);
+        System.out.println("bookId:"+bookID);
+        System.out.println("date:"+today);
+
+        selectedBook.setBorrowed_quantity(selectedBook.getBorrowed_quantity()+1);
+
+        JOptionPane.showMessageDialog(jf, "Successfull!",
+                "Added new user!", JOptionPane.INFORMATION_MESSAGE);
+        historyService.saveBorrowedHistory(borrowedHistory);
+        return "redirect:/books";
+    }
+
+
 
 
 }

@@ -34,7 +34,7 @@ public class HistoryController {
 
 
     @GetMapping(value="/history")
-    public String listHistory(Model model){ //used to transfer data between the view and controller
+    public String listHistory(Model model){
         List<HistoryOfBooksAndUsers> historyList= new ArrayList<HistoryOfBooksAndUsers>();
 
         int borrowed_id;
